@@ -1,0 +1,34 @@
+{
+  "id": "truong-bo",
+  "title": "Kinh Trường Bộ",
+  "pali": "Dīgha Nikāya",
+  "tagline": "Trường Bộ",
+  "hue": 0,
+  "description": "Dīgha Nikāya – bộ kinh cốt lõi ghi lại những bài giảng dài nhất của Đức Phật, chứa đựng những giáo lý căn bản và sâu sắc về đạo đức, thiền định và trí tuệ.",
+  "translations": [
+    {
+      "id": "pali-viet",
+      "label": "Pali – Việt (song ngữ)",
+      "lang": "vi",
+      "desc": "Bản đối chiếu song ngữ Pali – Việt dựa trên bản dịch của Hòa thượng Thích Minh Châu."
+    },
+    {
+      "id": "thich-minh-chau",
+      "label": "Thích Minh Châu",
+      "lang": "vi",
+      "desc": "Bản dịch truyền thống, phổ biến nhất tại Việt Nam, dịch trực tiếp từ Tam Tạng Pali."
+    },
+    {
+      "id": "sujato-vi",
+      "label": "Bhikkhu Sujato (Tiếng Việt)",
+      "lang": "vi",
+      "desc": "Bản dịch tiếng Việt hiện đại, chuyển ngữ từ bản tiếng Anh của Bhikkhu Sujato."
+    },
+    {
+      "id": "sujato-en",
+      "label": "Bhikkhu Sujato (English)",
+      "lang": "en",
+      "desc": "Modern English translation by Bhikkhu Sujato, published on SuttaCentral."
+    }
+  ]
+}

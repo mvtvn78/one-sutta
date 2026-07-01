@@ -1,0 +1,28 @@
+{
+  "id": "trung-bo",
+  "title": "Kinh Trung Bộ",
+  "pali": "Majjhima Nikāya",
+  "tagline": "Trung Bộ",
+  "hue": 28,
+  "description": "Majjhima Nikāya gồm 152 bài kinh có độ dài trung bình, trình bày đa dạng chủ đề từ giáo lý căn bản, thiền quán đến các cuộc đối thoại triết học sâu sắc.",
+  "translations": [
+    {
+      "id": "thich-minh-chau",
+      "label": "Thích Minh Châu",
+      "lang": "vi",
+      "desc": "Bản dịch truyền thống, phổ biến nhất tại Việt Nam, dịch trực tiếp từ Tam Tạng Pali."
+    },
+    {
+      "id": "bodhi-en",
+      "label": "Bhikkhu Bodhi (English)",
+      "lang": "en",
+      "desc": "Scholarly English translation by Bhikkhu Bodhi, known for precise annotation."
+    },
+    {
+      "id": "sujato-vi",
+      "label": "Bhikkhu Sujato (Tiếng Việt)",
+      "lang": "vi",
+      "desc": "Bản dịch tiếng Việt hiện đại, chuyển ngữ từ bản tiếng Anh của Bhikkhu Sujato."
+    }
+  ]
+}

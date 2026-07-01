@@ -1,0 +1,22 @@
+{
+  "id": "tieu-bo",
+  "title": "Kinh Tiểu Bộ",
+  "pali": "Khuddaka Nikāya",
+  "tagline": "Tiểu Bộ",
+  "hue": 265,
+  "description": "Khuddaka Nikāya là tuyển tập phong phú nhất gồm 15 tập kinh nhỏ, trong đó có Kinh Pháp Cú, Kinh Tập, Trưởng Lão Tăng Kệ và Bổn Sanh — giàu chất văn học và triết lý.",
+  "translations": [
+    {
+      "id": "thich-minh-chau",
+      "label": "Thích Minh Châu",
+      "lang": "vi",
+      "desc": "Bản dịch truyền thống, phổ biến nhất tại Việt Nam, dịch trực tiếp từ Tam Tạng Pali."
+    },
+    {
+      "id": "indacanda",
+      "label": "Tỳ khưu Indacanda",
+      "lang": "vi",
+      "desc": "Bản dịch tiếng Việt chú trọng độ chính xác thuật ngữ Pali."
+    }
+  ]
+}

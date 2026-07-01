@@ -12,6 +12,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
+    "autoprefixer": "^10.5.2",
+    "postcss": "^8.5.16",
+    "tailwindcss": "^3.4.17",
     "vitepress": "^2.0.0-alpha.17",
     "vue": "^3.5.39"
   }

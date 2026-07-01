@@ -1,0 +1,22 @@
+{
+  "id": "tuong-ung-bo",
+  "title": "Kinh Tương Ưng Bộ",
+  "pali": "Saṃyutta Nikāya",
+  "tagline": "Tương Ưng Bộ",
+  "hue": 150,
+  "description": "Saṃyutta Nikāya tập hợp các bài kinh ngắn được phân loại theo chủ đề (tương ưng), là nguồn giáo lý cô đọng về Duyên khởi, Ngũ uẩn và Bát Chánh Đạo.",
+  "translations": [
+    {
+      "id": "thich-minh-chau",
+      "label": "Thích Minh Châu",
+      "lang": "vi",
+      "desc": "Bản dịch truyền thống, phổ biến nhất tại Việt Nam, dịch trực tiếp từ Tam Tạng Pali."
+    },
+    {
+      "id": "bodhi-en",
+      "label": "Bhikkhu Bodhi (English)",
+      "lang": "en",
+      "desc": "Scholarly English translation by Bhikkhu Bodhi, known for precise annotation."
+    }
+  ]
+}

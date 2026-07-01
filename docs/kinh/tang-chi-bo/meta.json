@@ -1,0 +1,22 @@
+{
+  "id": "tang-chi-bo",
+  "title": "Kinh Tăng Chi Bộ",
+  "pali": "Aṅguttara Nikāya",
+  "tagline": "Tăng Chi Bộ",
+  "hue": 200,
+  "description": "Aṅguttara Nikāya sắp xếp các bài kinh theo số lượng chi pháp tăng dần (từ Một pháp đến Mười một pháp), thuận tiện cho việc ghi nhớ và thực hành.",
+  "translations": [
+    {
+      "id": "thich-minh-chau",
+      "label": "Thích Minh Châu",
+      "lang": "vi",
+      "desc": "Bản dịch truyền thống, phổ biến nhất tại Việt Nam, dịch trực tiếp từ Tam Tạng Pali."
+    },
+    {
+      "id": "bodhi-en",
+      "label": "Bhikkhu Bodhi (English)",
+      "lang": "en",
+      "desc": "Scholarly English translation by Bhikkhu Bodhi, known for precise annotation."
+    }
+  ]
+}
