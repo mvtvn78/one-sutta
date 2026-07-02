@@ -1,5 +1,7 @@
 import { defineConfig } from 'vitepress'
 
+const siteUrl = process.env.SITE_URL || 'https://mvtvn78.github.io'
+
 const antiFlashScript = `
 (function(){
   try {
@@ -17,7 +19,8 @@ export default defineConfig({
   title: 'Kinh Nikaya',
   description: 'Thư viện kinh điển Nam truyền — Ngũ Bộ Kinh Nikaya',
   lang: 'vi-VN',
-  base: '/nityata-sutta/',
+  base: '/',
+  lastUpdated: true,
   srcExclude: ['kinh/README.md'],
   head: [
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
@@ -40,5 +43,21 @@ export default defineConfig({
   themeConfig: {
     nav: [],
     sidebar: false,
+  },
+  sitemap: {
+    hostname: siteUrl,
+    lastmodDateOnly: true,
+    transformItems(items) {
+      return items.map((item) => {
+        const path = (item.url || '/').replace(/\/$/, '') || '/'
+        if (path === '/' || path === '/index.html') {
+          return { ...item, changefreq: 'weekly', priority: 1 }
+        }
+        const depth = path.replace(/^\//, '').split('/').filter(Boolean).length
+        if (depth === 2) return { ...item, changefreq: 'monthly', priority: 0.9 }
+        if (depth === 3) return { ...item, changefreq: 'monthly', priority: 0.8 }
+        return { ...item, changefreq: 'yearly', priority: 0.7 }
+      })
+    },
   },
 })

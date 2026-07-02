@@ -18,5 +18,8 @@
     "tailwindcss": "^3.4.17",
     "vitepress": "^2.0.0-alpha.17",
     "vue": "^3.5.39"
+  },
+  "dependencies": {
+    "dexie": "^4.4.4"
   }
 }

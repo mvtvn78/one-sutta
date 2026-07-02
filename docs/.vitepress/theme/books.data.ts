@@ -21,16 +21,24 @@ function loadBookMetas(): Map<string, BookMeta> {
   return map
 }
 
+function normalizeSuttaSlug(slug: string): string {
+  return slug.replace(/\.html$/, '')
+}
+
 function parseSuttaPath(url: string): {
   bookId: string
   transId: string
   suttaId: string
 } | null {
-  const normalized = url.replace(/\/$/, '')
+  const normalized = url.replace(/\/$/, '').replace(/\.html$/, '')
   const match = normalized.match(/\/kinh\/([^/]+)\/([^/]+)\/([^/]+)$/)
   if (!match) return null
   if (match[3] === 'index') return null
-  return { bookId: match[1], transId: match[2], suttaId: match[3] }
+  return {
+    bookId: match[1],
+    transId: match[2],
+    suttaId: normalizeSuttaSlug(match[3]),
+  }
 }
 
 function hasBodyContent(src: string | undefined): boolean {

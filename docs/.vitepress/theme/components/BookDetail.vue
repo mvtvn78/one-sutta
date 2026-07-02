@@ -6,6 +6,7 @@ import { useLink } from '../composables/useLink'
 import Breadcrumb from './Breadcrumb.vue'
 import BookCover from './BookCover.vue'
 import MaterialIcon from './MaterialIcon.vue'
+import NotFound from './NotFound.vue'
 
 const props = defineProps<{ bookId: string }>()
 const { findBook, buildBreadcrumb } = useBooks()
@@ -80,4 +81,5 @@ const crumbs = computed(() => buildBreadcrumb(props.bookId))
       </div>
     </div>
   </div>
+  <NotFound v-else />
 </template>

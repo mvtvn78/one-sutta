@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useData, Content } from 'vitepress'
 import { useBooks } from '../composables/useBooks'
+import { useNotesPanel } from '../composables/useNotesPanel'
+import { useBookmarks } from '../composables/useBookmarks'
 import { useLink } from '../composables/useLink'
 import Breadcrumb from './Breadcrumb.vue'
 import MaterialIcon from './MaterialIcon.vue'
+import NotFound from './NotFound.vue'
 
 const props = defineProps<{ bookId: string; transId: string; suttaId: string }>()
 const { frontmatter } = useData()
 const { findBook, findTranslation, findSutta, getPrevNext, buildBreadcrumb } = useBooks()
+const { open: openNotes } = useNotesPanel()
+const { isBookmarked, toggleBookmark } = useBookmarks()
 const link = useLink()
+
+const bookmarked = ref(false)
 
 const book = computed(() => findBook(props.bookId))
 const trans = computed(() => (book.value ? findTranslation(book.value, props.transId) : undefined))
@@ -17,8 +24,31 @@ const sutta = computed(() =>
   book.value ? findSutta(book.value, props.transId, props.suttaId) : undefined
 )
 
+async function refreshBookmark() {
+  bookmarked.value = await isBookmarked(props.bookId, props.transId, props.suttaId)
+}
+
+onMounted(() => refreshBookmark())
+watch(() => [props.bookId, props.transId, props.suttaId], () => refreshBookmark())
+
+async function toggleBookmarkState() {
+  bookmarked.value = await toggleBookmark({
+    bookId: props.bookId,
+    transId: props.transId,
+    suttaId: props.suttaId,
+    suttaCode: String(frontmatter.value.code || sutta.value?.code || ''),
+    suttaTitle: String(frontmatter.value.title || sutta.value?.title || ''),
+    bookTagline: book.value?.tagline,
+    transLabel: trans.value?.label,
+    url: sutta.value?.url,
+  })
+}
+
 const crumbs = computed(() =>
-  buildBreadcrumb(props.bookId, props.transId, String(frontmatter.value.code || props.suttaId))
+  buildBreadcrumb(props.bookId, props.transId, {
+    code: String(frontmatter.value.code || sutta.value?.code || ''),
+    title: String(frontmatter.value.title || sutta.value?.title || ''),
+  })
 )
 
 const nav = computed(() =>
@@ -30,13 +60,44 @@ const isEmpty = computed(() => {
   if (sutta.value && !sutta.value.hasContent) return true
   return false
 })
+
+function openNotesPanel() {
+  openNotes({
+    bookId: props.bookId,
+    transId: props.transId,
+    suttaId: props.suttaId,
+    suttaCode: String(frontmatter.value.code || sutta.value?.code || ''),
+    suttaTitle: String(frontmatter.value.title || sutta.value?.title || ''),
+  })
+}
 </script>
 
 <template>
-  <div v-if="book && trans && sutta" class="flex">
+  <div v-if="book && trans" class="flex">
     <article class="flex-1 min-w-0 px-4 sm:px-gutter py-12 md:py-16">
       <div class="max-w-reading mx-auto reading">
-        <Breadcrumb :items="crumbs" />
+        <div class="flex items-start justify-between gap-3 mb-8">
+          <Breadcrumb class="!mb-0 flex-1 min-w-0" :items="crumbs" />
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              class="flex items-center gap-1.5 px-3 py-2 rounded-full hairline bg-s3 font-label text-label-sm hover:bg-s4 transition-colors"
+              :class="bookmarked ? 'text-primary' : 'text-onv'"
+              :title="bookmarked ? 'Bỏ đánh dấu' : 'Đánh dấu bài kinh'"
+              @click="toggleBookmarkState"
+            >
+              <MaterialIcon :name="bookmarked ? 'bookmark' : 'bookmark_border'" class="text-[18px]" />
+              <span class="hidden sm:inline">{{ bookmarked ? 'Đã lưu' : 'Lưu' }}</span>
+            </button>
+            <button
+              type="button"
+              class="lg:hidden flex items-center gap-1.5 px-3 py-2 rounded-full hairline bg-s3 text-primary font-label text-label-sm hover:bg-s4 transition-colors"
+              @click="openNotesPanel"
+            >
+              <MaterialIcon name="edit_note" class="text-[18px]" /> Ghi chú
+            </button>
+          </div>
+        </div>
         <header class="mb-section-gap">
           <h1 class="font-display text-display-lg text-primary glow mb-3 leading-tight">
             {{ frontmatter.code }}. {{ String(frontmatter.title || '').toUpperCase() }}
@@ -96,4 +157,5 @@ const isEmpty = computed(() => {
       </div>
     </article>
   </div>
+  <NotFound v-else />
 </template>

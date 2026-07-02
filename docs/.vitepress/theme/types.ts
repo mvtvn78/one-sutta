@@ -51,6 +51,8 @@ export interface BooksData {
 export interface BreadcrumbItem {
   label: string
   path?: string
+  /** Full text for tooltip when label is truncated */
+  title?: string
 }
 
 export interface Quote {

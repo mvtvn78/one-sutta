@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useBooks } from '../composables/useBooks'
 import { useSearchPalette } from '../composables/useSearchPalette'
+import { useNotesPanel } from '../composables/useNotesPanel'
 import { useLink } from '../composables/useLink'
 import MaterialIcon from './MaterialIcon.vue'
 
@@ -13,9 +14,8 @@ const props = defineProps<{
 
 const { findBook, findTranslation, findSutta, getPrevNext } = useBooks()
 const { open: openSearch } = useSearchPalette()
+const { open: openNotes } = useNotesPanel()
 const link = useLink()
-
-defineEmits<{ 'open-font': []; noop: [msg: string] }>()
 
 const book = computed(() => findBook(props.bookId))
 const trans = computed(() => (book.value ? findTranslation(book.value, props.transId) : undefined))
@@ -31,6 +31,16 @@ const progress = computed(() => {
 })
 
 const tocUrl = computed(() => `/kinh/${props.bookId}/${props.transId}/`)
+
+function openNotesPanel() {
+  openNotes({
+    bookId: props.bookId,
+    transId: props.transId,
+    suttaId: props.suttaId,
+    suttaCode: sutta.value?.code,
+    suttaTitle: sutta.value?.title,
+  })
+}
 </script>
 
 <template>
@@ -54,7 +64,7 @@ const tocUrl = computed(() => `/kinh/${props.bookId}/${props.transId}/`)
       <button
         type="button"
         class="flex items-center gap-3 p-3 rounded-lg text-onv hover:bg-s4 hover:text-primary transition-all font-label text-label-md text-left"
-        @click="$emit('noop', 'Tính năng Ghi chú sẽ sớm ra mắt.')"
+        @click="openNotesPanel"
       >
         <MaterialIcon name="edit_note" class="text-[20px]" /> Ghi chú
       </button>
@@ -64,13 +74,6 @@ const tocUrl = computed(() => `/kinh/${props.bookId}/${props.transId}/`)
         @click="openSearch"
       >
         <MaterialIcon name="search" class="text-[20px]" /> Tìm nhanh
-      </button>
-      <button
-        type="button"
-        class="flex items-center gap-3 p-3 rounded-lg text-onv hover:bg-s4 hover:text-primary transition-all font-label text-label-md text-left"
-        @click="$emit('open-font')"
-      >
-        <MaterialIcon name="settings" class="text-[20px]" /> Cài đặt
       </button>
     </nav>
     <div v-if="sutta" class="mt-auto pt-5 border-t border-ov">

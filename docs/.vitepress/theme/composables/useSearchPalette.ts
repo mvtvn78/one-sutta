@@ -39,13 +39,11 @@ export function useSearchPalette() {
       for (const s of flat) {
         if (seen.has(s.id)) continue
         seen.add(s.id)
-        const firstTrans = book.translations[0]
-        if (!firstTrans) continue
         index.push({
           type: book.tagline,
           label: `${s.code} · ${s.title}`,
           sub: s.pali,
-          path: `/kinh/${book.id}/${firstTrans.id}/${s.id}`,
+          path: s.url,
         })
       }
     }

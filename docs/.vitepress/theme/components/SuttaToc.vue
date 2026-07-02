@@ -5,6 +5,7 @@ import { useLink } from '../composables/useLink'
 import Breadcrumb from './Breadcrumb.vue'
 import BookCover from './BookCover.vue'
 import MaterialIcon from './MaterialIcon.vue'
+import NotFound from './NotFound.vue'
 
 const props = defineProps<{ bookId: string; transId: string }>()
 const { findBook, findTranslation, flatToc, buildBreadcrumb } = useBooks()
@@ -89,4 +90,5 @@ const groups = computed(() => {
       </section>
     </div>
   </div>
+  <NotFound v-else />
 </template>

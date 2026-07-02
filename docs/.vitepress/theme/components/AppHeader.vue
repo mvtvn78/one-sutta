@@ -3,12 +3,14 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useBooks } from '../composables/useBooks'
 import { usePreferences } from '../composables/usePreferences'
 import { useSearchPalette } from '../composables/useSearchPalette'
+import { useUserPanel } from '../composables/useUserPanel'
 import { useLink } from '../composables/useLink'
 import MaterialIcon from './MaterialIcon.vue'
 
 const { books } = useBooks()
 const { themeIcon, toggleTheme, fontStep, setFontStep, FONT_STEPS } = usePreferences()
 const { open: openSearch } = useSearchPalette()
+const { open: openUserPanel } = useUserPanel()
 
 const booksMenuOpen = ref(false)
 const fontMenuOpen = ref(false)
@@ -120,6 +122,14 @@ onUnmounted(() => {
           @click="toggleTheme"
         >
           <MaterialIcon :name="themeIcon()" />
+        </button>
+        <button
+          type="button"
+          class="p-2 rounded-lg hover:bg-s3 transition-colors text-primary"
+          title="BookMark & Ghi chú"
+          @click="openUserPanel('bookmarks')"
+        >
+          <MaterialIcon name="person" />
         </button>
         <div class="relative" ref="fontMenuRef">
           <button

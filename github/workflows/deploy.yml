@@ -32,6 +32,8 @@ jobs:
 
       - name: Build VitePress site
         run: npm run docs:build
+        env:
+          SITE_URL: https://mvtvn78.github.io
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

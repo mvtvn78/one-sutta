@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { useData } from 'vitepress'
 import { useBooks } from './composables/useBooks'
-import { usePreferences } from './composables/usePreferences'
 import AppHeader from './components/AppHeader.vue'
 import MobileDrawer from './components/MobileDrawer.vue'
 import SearchPalette from './components/SearchPalette.vue'
@@ -14,14 +13,14 @@ import BookDetail from './components/BookDetail.vue'
 import SuttaToc from './components/SuttaToc.vue'
 import SuttaReading from './components/SuttaReading.vue'
 import ReadingContextAside from './components/ReadingContextAside.vue'
+import NotesPanel from './components/NotesPanel.vue'
+import UserPanel from './components/UserPanel.vue'
 import NotFound from './components/NotFound.vue'
 
 const { frontmatter, page } = useData()
-const { parseRoute } = useBooks()
-const { showToast } = usePreferences()
+const { routeInfo } = useBooks()
 
 const drawerOpen = ref(false)
-const routeInfo = computed(() => parseRoute())
 
 const layout = computed(() => {
   const fm = frontmatter.value.layout as string | undefined
@@ -33,22 +32,42 @@ const layout = computed(() => {
   return 'unknown'
 })
 
-const showAside = computed(() => layout.value === 'toc' || layout.value === 'sutta')
-const fabHref = computed(() => {
+const view = computed(() => {
   const r = routeInfo.value
-  if (r.type === 'sutta' || r.type === 'toc') {
-    return `/kinh/${r.bookId}/${r.transId}/`
+  const fm = frontmatter.value
+
+  switch (layout.value) {
+    case 'book':
+      return {
+        type: 'book' as const,
+        bookId: r.type === 'book' ? r.bookId : String(fm.book || ''),
+      }
+    case 'toc':
+      return {
+        type: 'toc' as const,
+        bookId: r.type === 'toc' ? r.bookId : String(fm.book || ''),
+        transId: r.type === 'toc' ? r.transId : String(fm.translation || ''),
+      }
+    case 'sutta':
+      return {
+        type: 'sutta' as const,
+        bookId: r.type === 'sutta' ? r.bookId : String(fm.book || ''),
+        transId: r.type === 'sutta' ? r.transId : String(fm.translation || ''),
+        suttaId: r.type === 'sutta' ? r.suttaId : '',
+      }
+    default:
+      return { type: layout.value as 'home' | 'unknown' }
+  }
+})
+
+const showAside = computed(() => view.value.type === 'toc' || view.value.type === 'sutta')
+const fabHref = computed(() => {
+  const v = view.value
+  if (v.type === 'sutta' || v.type === 'toc') {
+    return `/kinh/${v.bookId}/${v.transId}/`
   }
   return '/'
 })
-
-function onNoop(msg: string) {
-  showToast(msg)
-}
-
-function openFontFromAside() {
-  showToast('Dùng nút cỡ chữ trên thanh tiêu đề để chỉnh cỡ chữ.')
-}
 </script>
 
 <template>
@@ -56,6 +75,8 @@ function openFontFromAside() {
     <AppHeader @open-drawer="drawerOpen = true" />
     <MobileDrawer :open="drawerOpen" @close="drawerOpen = false" />
     <SearchPalette />
+    <NotesPanel />
+    <UserPanel />
     <Toast />
 
     <main class="flex-1 min-h-screen">
@@ -63,29 +84,27 @@ function openFontFromAside() {
         <div class="flex-1 min-w-0">
           <HomeHero v-if="layout === 'home'" />
           <BookDetail
-            v-else-if="layout === 'book' && routeInfo.type === 'book'"
-            :book-id="routeInfo.bookId"
+            v-else-if="view.type === 'book' && view.bookId"
+            :book-id="view.bookId"
           />
           <SuttaToc
-            v-else-if="layout === 'toc' && routeInfo.type === 'toc'"
-            :book-id="routeInfo.bookId"
-            :trans-id="routeInfo.transId"
+            v-else-if="view.type === 'toc' && view.bookId && view.transId"
+            :book-id="view.bookId"
+            :trans-id="view.transId"
           />
           <SuttaReading
-            v-else-if="layout === 'sutta' && routeInfo.type === 'sutta'"
-            :book-id="routeInfo.bookId"
-            :trans-id="routeInfo.transId"
-            :sutta-id="routeInfo.suttaId"
+            v-else-if="view.type === 'sutta' && view.bookId && view.transId && view.suttaId"
+            :book-id="view.bookId"
+            :trans-id="view.transId"
+            :sutta-id="view.suttaId"
           />
           <NotFound v-else-if="layout === 'unknown' || page.isNotFound" />
         </div>
         <ReadingContextAside
-          v-if="showAside && (routeInfo.type === 'toc' || routeInfo.type === 'sutta')"
-          :book-id="routeInfo.bookId"
-          :trans-id="routeInfo.transId"
-          :sutta-id="routeInfo.type === 'sutta' ? routeInfo.suttaId : undefined"
-          @noop="onNoop"
-          @open-font="openFontFromAside"
+          v-if="showAside && (view.type === 'toc' || view.type === 'sutta')"
+          :book-id="view.bookId"
+          :trans-id="view.transId"
+          :sutta-id="view.type === 'sutta' ? view.suttaId : undefined"
         />
       </div>
     </main>
