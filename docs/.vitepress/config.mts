@@ -19,7 +19,7 @@ export default defineConfig({
   title: 'Kinh Nikaya',
   description: 'Thư viện kinh điển Nam truyền — Ngũ Bộ Kinh Nikaya',
   lang: 'vi-VN',
-  base: '/Nityata-Sutta',
+  base: '/one-sutta',
   lastUpdated: true,
   srcExclude: ['kinh/README.md'],
   head: [
